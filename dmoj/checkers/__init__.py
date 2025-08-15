@@ -13,6 +13,7 @@ from dmoj.checkers import (
     sorted,
     standard,
     unordered,
+    verilogchecker,
 )
 from dmoj.result import CheckerResult
 

@@ -1,0 +1,28 @@
+# verilogDockerfile
+FROM dmoj/judge-tier3:latest
+
+# 1. 安裝 Icarus Verilog（內含 vvp），並縮小映像
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get update && \
+    apt-get install -y --no-install-recommends iverilog && \
+    apt-get install -y --no-install-recommends xvfb xauth gtkwave && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# 2. 複製自訂 executor
+COPY dmoj/executors/VLOG.py /judge/dmoj/executors/
+# 複製自訂 checker（檔名或大小寫要與 Language.key 一致）
+COPY dmoj/checkers/verilogchecker.py /judge/dmoj/checkers/
+#複製修改過的 c_like_executor.py
+COPY dmoj/executors/c_like_executor.py /judge/dmoj/executors/c_like_executor.py
+#複製修改過的_init__.py、__init__.pyi
+COPY dmoj/checkers/__init__.py /judge/dmoj/checkers/__init__.py
+COPY dmoj/checkers/__init__.pyi /judge/dmoj/checkers/__init__.pyi
+
+COPY dmoj/graders/standard.py /judge/dmoj/graders/standard.py
+
+COPY requirements.txt /tmp/requirements.txt
+RUN /env/bin/pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
+
+# 3. 重新安裝 judge；以 judge 使用者產生 runtime-path 快取
+RUN /env/bin/pip install --no-cache-dir -e /judge && \
+    runuser -u judge -- /env/bin/dmoj-autoconf > /judge-runtime-paths.yml

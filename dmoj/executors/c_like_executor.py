@@ -1,5 +1,6 @@
 import os
 import re
+import zipfile
 from collections import deque
 from typing import Dict, List, Optional, Type
 
@@ -46,6 +47,35 @@ class CLikeExecutor(SingleDigitVersionMixin, CompiledExecutor):
             with open(self._file(name), 'wb') as fo:
                 fo.write(utf8bytes(source))
             self.source_paths.append(name)
+        if problem_id == 'self_test':
+            return 
+        os.makedirs(self._dir, exist_ok=True) 
+        source_dir = "/problems/" + problem_id
+        print(source_dir)
+        target_dir = self._dir
+        for root, dirs, files in os.walk(source_dir):
+            for filename in files:
+                if not filename.lower().endswith('.zip'):
+                    continue
+
+                zip_path = os.path.join(root, filename)
+
+                # 方法二：如需更細節的控制（可過濾、改名等），逐一讀寫
+                with zipfile.ZipFile(zip_path, 'r') as zf:
+                    for member in zf.namelist():
+                        # 忽略資料夾名稱
+                        if member.endswith('/'):
+                            continue
+
+                        # 在目標資料夾裡，重建完整路徑
+                        dest_path = os.path.join(target_dir, member)
+                        dest_folder = os.path.dirname(dest_path)
+                        os.makedirs(dest_folder, exist_ok=True)
+
+                        # 將檔案內容讀出並寫入
+                        with zf.open(member) as source_file, open(dest_path, 'wb') as target_file:
+                            data = source_file.read()
+                            target_file.write(data)
 
     def get_binary_cache_key(self) -> bytes:
         command = self.get_command()

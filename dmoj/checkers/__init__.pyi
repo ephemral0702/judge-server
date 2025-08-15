@@ -37,3 +37,4 @@ rstripped: Checker
 sorted: Checker
 standard: Checker
 unordered: Checker
+verilogchecker: Checker

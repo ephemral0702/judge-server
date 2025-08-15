@@ -5,3 +5,4 @@ pyyaml
 setproctitle
 termcolor
 watchdog
+requests
