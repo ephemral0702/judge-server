@@ -114,4 +114,5 @@ class StandardGrader(BaseGrader):
             hints=self.problem.config.hints or [],
             unbuffered=self.problem.config.unbuffered,
             submission_id=self.judge.submission.id,
+            meta=self.problem.meta,
         )

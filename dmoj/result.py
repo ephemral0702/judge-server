@@ -19,6 +19,7 @@ class Result:
     IR = 1 << 4
     SC = 1 << 5
     OLE = 1 << 6
+    PLE = 1 << 7
     IE = 1 << 30
     COLORS_BYID = {
         'AC': 'green',
@@ -29,9 +30,10 @@ class Result:
         'IR': 'yellow',
         'SC': 'magenta',
         'OLE': 'yellow',
+        'PLE': 'red',
         'IE': 'red',
     }
-    CODE_DISPLAY_ORDER = ('IE', 'TLE', 'MLE', 'OLE', 'RTE', 'IR', 'WA', 'SC')
+    CODE_DISPLAY_ORDER = ('IE', 'TLE', 'MLE', 'OLE', 'PLE', 'RTE', 'IR', 'WA', 'SC')
 
     def __init__(
         self,

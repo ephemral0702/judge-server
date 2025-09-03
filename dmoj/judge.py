@@ -510,7 +510,7 @@ class JudgeWorker:
                         yield IPC.GRADING_ABORTED, ()
                         return
 
-                    if result.result_flag & Result.WA:
+                    if result.result_flag & (Result.WA | Result.PLE):
                         # If we failed a 0-point case, we will short-circuit every case after this.
                         is_short_circuiting_enabled |= not case.points
 

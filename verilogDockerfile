@@ -19,6 +19,8 @@ COPY dmoj/checkers/__init__.py /judge/dmoj/checkers/__init__.py
 COPY dmoj/checkers/__init__.pyi /judge/dmoj/checkers/__init__.pyi
 
 COPY dmoj/graders/standard.py /judge/dmoj/graders/standard.py
+COPY dmoj/result.py /judge/dmoj/result.py
+COPY dmoj/judge.py /judge/dmoj/judge.py
 
 COPY requirements.txt /tmp/requirements.txt
 RUN /env/bin/pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
